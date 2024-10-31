@@ -47,28 +47,35 @@ public class SignatureService {
             // 尝试从 keyPath 读取密钥
             File privateKeyFile = new File(keyPath + "/" + tableName + "_private.key");
             File publicKeyFile = new File(keyPath + "/" + tableName + "_public.key");
-
-            if (!privateKeyFile.exists() || !publicKeyFile.exists()) {
-                // 如果密钥文件不存在，则生成新的密钥对
-                generateKeyPair(tableName);
-            } else {
-                // 如果存在，则从文件中读取密钥并缓存
-                try {
-                    KeyFactory keyFactory = KeyFactory.getInstance("EC");
-
-                    if (isServer) {
-                        // 读取私钥
-                        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
-                        PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
-                        keyCache.put(tableName, privateKey);
-                    } else {
-                        // 读取公钥
+            System.out.println("privateKeyFile: " + privateKeyFile);
+            System.out.println("publicKeyFile: " + publicKeyFile);
+            if (isServer) {
+                // Server模式：判断公钥是否存在，不存在报错，存在则缓存公钥
+                if (!publicKeyFile.exists()) {
+                    throw new IllegalStateException("Public key not found for table: " + tableName);
+                } else {
+                    try {
                         byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
+                        KeyFactory keyFactory = KeyFactory.getInstance("EC");
                         PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
                         keyCache.put(tableName, publicKey);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+            } else {
+                // Client模式：判断私钥是否存在，不存在就创建公私钥对，存在则缓存私钥
+                if (!privateKeyFile.exists()) {
+                    generateKeyPair(tableName);
+                } else {
+                    try {
+                        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
+                        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+                        PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+                        keyCache.put(tableName, privateKey);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -83,9 +90,9 @@ public class SignatureService {
 
             // 缓存需要的密钥
             if (isServer) {
-                keyCache.put(tableName, keyPair.getPrivate());
-            } else {
                 keyCache.put(tableName, keyPair.getPublic());
+            } else {
+                keyCache.put(tableName, keyPair.getPrivate());
             }
 
             // 获取私钥和公钥

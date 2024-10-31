@@ -1,0 +1,460 @@
+2024-10-31 19:12:58 - Starting SynserverApplication using Java 17.0.13-ea with PID 1528137 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:12:59 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:12:59 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:12:59 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:13:00 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:13:00 - Starting service [Tomcat]
+2024-10-31 19:13:00 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:13:00 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:13:00 - Root WebApplicationContext: initialization completed in 1052 ms
+2024-10-31 19:13:00 - HikariPool-1 - Starting...
+2024-10-31 19:13:00 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4638a367
+2024-10-31 19:13:00 - HikariPool-1 - Start completed.
+2024-10-31 19:13:00 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduleService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/schedule/ScheduleService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+2024-10-31 19:13:00 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:13:00 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:13:00 - Stopping service [Tomcat]
+2024-10-31 19:13:00 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-10-31 19:13:00 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduleService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/schedule/ScheduleService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1212)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:971)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.fdu.synserver.SynserverApplication.main(SynserverApplication.java:13)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1212)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 24 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 38 common frames omitted
+Caused by: java.lang.IllegalStateException: Public key not found for table: fabric_test_channel
+	at com.fdu.synserver.service.SignatureService.initKeyPairFromTables(SignatureService.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219)
+	... 51 common frames omitted
+2024-10-31 19:15:47 - Starting SynserverApplication using Java 17.0.13-ea with PID 1532722 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:15:47 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:15:47 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:15:47 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:15:48 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:15:48 - Starting service [Tomcat]
+2024-10-31 19:15:48 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:15:48 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:15:48 - Root WebApplicationContext: initialization completed in 1064 ms
+2024-10-31 19:15:48 - HikariPool-1 - Starting...
+2024-10-31 19:15:49 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@29f3f43f
+2024-10-31 19:15:49 - HikariPool-1 - Start completed.
+2024-10-31 19:15:49 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduleService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/schedule/ScheduleService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+2024-10-31 19:15:49 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:15:49 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:15:49 - Stopping service [Tomcat]
+2024-10-31 19:15:49 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-10-31 19:15:49 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduleService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/schedule/ScheduleService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1212)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:971)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.fdu.synserver.SynserverApplication.main(SynserverApplication.java:13)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MQSynTestService' defined in file [/home/lihaodong/SynServer/synserver/target/classes/com/fdu/synserver/service/MQSynTestService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1212)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 24 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'signatureService': Invocation of init method failed
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 38 common frames omitted
+Caused by: java.lang.IllegalStateException: Public key not found for table: fabric_test_channel
+	at com.fdu.synserver.service.SignatureService.initKeyPairFromTables(SignatureService.java:55)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219)
+	... 51 common frames omitted
+2024-10-31 19:24:09 - Starting SynserverApplication using Java 17.0.13-ea with PID 1545190 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:24:09 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:24:09 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:24:09 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:24:10 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:24:10 - Starting service [Tomcat]
+2024-10-31 19:24:10 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:24:10 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:24:10 - Root WebApplicationContext: initialization completed in 1099 ms
+2024-10-31 19:24:10 - HikariPool-1 - Starting...
+2024-10-31 19:24:10 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4080049b
+2024-10-31 19:24:10 - HikariPool-1 - Start completed.
+2024-10-31 19:24:10 - Test Producer init success
+2024-10-31 19:24:11 - LiveReload server is running on port 35729
+2024-10-31 19:24:11 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:24:11 - Started SynserverApplication in 3.245 seconds (process running for 3.698)
+2024-10-31 19:24:11 - Try to send message
+2024-10-31 19:24:12 - Send message successfully, messageId=010242AF97F8BA93E6073502DB00000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:24:12 - Try to send message
+2024-10-31 19:24:12 - Send message successfully, messageId=010242AF97F8BA93E6073502DC00000001 topic = signature tag=fabric_test_channel
+2024-10-31 19:24:13 - Try to send message
+2024-10-31 19:24:13 - Send message successfully, messageId=010242AF97F8BA93E6073502DD00000002 topic = signature tag=fabric_test_channel
+2024-10-31 19:24:14 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:24:14 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:28:06 - Starting SynserverApplication using Java 17.0.13-ea with PID 1551258 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:28:06 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:28:06 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:28:06 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:28:07 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:28:07 - Starting service [Tomcat]
+2024-10-31 19:28:07 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:28:07 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:28:07 - Root WebApplicationContext: initialization completed in 1051 ms
+2024-10-31 19:28:07 - HikariPool-1 - Starting...
+2024-10-31 19:28:07 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49152e7d
+2024-10-31 19:28:07 - HikariPool-1 - Start completed.
+2024-10-31 19:28:08 - Test Producer init success
+2024-10-31 19:28:09 - LiveReload server is running on port 35729
+2024-10-31 19:28:09 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:28:09 - Started SynserverApplication in 3.208 seconds (process running for 3.677)
+2024-10-31 19:28:09 - Try to send message
+2024-10-31 19:28:09 - Send message successfully, messageId=010242AF97F8BAAB9A073503C900000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:28:10 - Try to send message
+2024-10-31 19:28:10 - Send message successfully, messageId=010242AF97F8BAAB9A073503C900000005 topic = signature tag=fabric_test_channel
+2024-10-31 19:28:11 - Try to send message
+2024-10-31 19:28:11 - Send message successfully, messageId=010242AF97F8BAAB9A073503CA00000007 topic = signature tag=fabric_test_channel
+2024-10-31 19:28:12 - Try to send message
+2024-10-31 19:28:12 - Send message successfully, messageId=010242AF97F8BAAB9A073503CB00000009 topic = signature tag=fabric_test_channel
+2024-10-31 19:28:13 - Try to send message
+2024-10-31 19:28:13 - Send message successfully, messageId=010242AF97F8BAAB9A073503CC0000000B topic = signature tag=fabric_test_channel
+2024-10-31 19:28:13 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:28:13 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:34:25 - Starting SynserverApplication using Java 17.0.13-ea with PID 1561682 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:34:25 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:34:25 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:34:25 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:34:26 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:34:26 - Starting service [Tomcat]
+2024-10-31 19:34:26 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:34:26 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:34:26 - Root WebApplicationContext: initialization completed in 1050 ms
+2024-10-31 19:34:27 - HikariPool-1 - Starting...
+2024-10-31 19:34:27 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6b2a0979
+2024-10-31 19:34:27 - HikariPool-1 - Start completed.
+2024-10-31 19:34:28 - Test Producer init success
+2024-10-31 19:34:28 - LiveReload server is running on port 35729
+2024-10-31 19:34:28 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:34:28 - Started SynserverApplication in 3.246 seconds (process running for 3.707)
+2024-10-31 19:34:28 - Try to send message
+2024-10-31 19:34:28 - Send message successfully, messageId=010242AF97F8BAD4520735054400000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:29 - Try to send message
+2024-10-31 19:34:29 - Send message successfully, messageId=010242AF97F8BAD4520735054500000001 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:30 - Try to send message
+2024-10-31 19:34:30 - Send message successfully, messageId=010242AF97F8BAD4520735054600000002 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:31 - Try to send message
+2024-10-31 19:34:31 - Send message successfully, messageId=010242AF97F8BAD4520735054700000003 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:32 - Try to send message
+2024-10-31 19:34:32 - Send message successfully, messageId=010242AF97F8BAD4520735054800000004 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:33 - Try to send message
+2024-10-31 19:34:33 - Send message successfully, messageId=010242AF97F8BAD4520735054900000005 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:34 - Try to send message
+2024-10-31 19:34:34 - Send message successfully, messageId=010242AF97F8BAD4520735054A00000006 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:35 - Try to send message
+2024-10-31 19:34:35 - Send message successfully, messageId=010242AF97F8BAD4520735054B00000007 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:36 - Try to send message
+2024-10-31 19:34:36 - Send message successfully, messageId=010242AF97F8BAD4520735054C00000008 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:37 - Try to send message
+2024-10-31 19:34:37 - Send message successfully, messageId=010242AF97F8BAD4520735054D00000009 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:38 - Try to send message
+2024-10-31 19:34:38 - Send message successfully, messageId=010242AF97F8BAD4520735054E0000000A topic = signature tag=fabric_test_channel
+2024-10-31 19:34:39 - Try to send message
+2024-10-31 19:34:39 - Send message successfully, messageId=010242AF97F8BAD4520735054F0000000B topic = signature tag=fabric_test_channel
+2024-10-31 19:34:40 - Try to send message
+2024-10-31 19:34:40 - Send message successfully, messageId=010242AF97F8BAD452073505500000000C topic = signature tag=fabric_test_channel
+2024-10-31 19:34:41 - Try to send message
+2024-10-31 19:34:41 - Send message successfully, messageId=010242AF97F8BAD452073505510000000D topic = signature tag=fabric_test_channel
+2024-10-31 19:34:42 - Try to send message
+2024-10-31 19:34:42 - Send message successfully, messageId=010242AF97F8BAD452073505520000000E topic = signature tag=fabric_test_channel
+2024-10-31 19:34:43 - Try to send message
+2024-10-31 19:34:43 - Send message successfully, messageId=010242AF97F8BAD452073505530000000F topic = signature tag=fabric_test_channel
+2024-10-31 19:34:44 - Try to send message
+2024-10-31 19:34:44 - Send message successfully, messageId=010242AF97F8BAD4520735055400000010 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:45 - Try to send message
+2024-10-31 19:34:45 - Send message successfully, messageId=010242AF97F8BAD4520735055500000011 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:46 - Try to send message
+2024-10-31 19:34:46 - Send message successfully, messageId=010242AF97F8BAD4520735055600000012 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:47 - Try to send message
+2024-10-31 19:34:47 - Send message successfully, messageId=010242AF97F8BAD4520735055700000013 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:48 - Try to send message
+2024-10-31 19:34:48 - Send message successfully, messageId=010242AF97F8BAD4520735055800000014 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:49 - Try to send message
+2024-10-31 19:34:49 - Send message successfully, messageId=010242AF97F8BAD4520735055900000015 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:50 - Try to send message
+2024-10-31 19:34:50 - Send message successfully, messageId=010242AF97F8BAD4520735055A00000016 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:51 - Try to send message
+2024-10-31 19:34:51 - Send message successfully, messageId=010242AF97F8BAD4520735055B00000017 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:52 - Try to send message
+2024-10-31 19:34:52 - Send message successfully, messageId=010242AF97F8BAD4520735055C00000018 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:53 - Try to send message
+2024-10-31 19:34:53 - Send message successfully, messageId=010242AF97F8BAD4520735055D00000019 topic = signature tag=fabric_test_channel
+2024-10-31 19:34:54 - Try to send message
+2024-10-31 19:34:54 - Send message successfully, messageId=010242AF97F8BAD4520735055E0000001A topic = signature tag=fabric_test_channel
+2024-10-31 19:34:55 - Try to send message
+2024-10-31 19:34:55 - Send message successfully, messageId=010242AF97F8BAD4520735055F0000001B topic = signature tag=fabric_test_channel
+2024-10-31 19:34:56 - Try to send message
+2024-10-31 19:34:56 - Send message successfully, messageId=010242AF97F8BAD452073505600000001C topic = signature tag=fabric_test_channel
+2024-10-31 19:34:57 - Try to send message
+2024-10-31 19:34:57 - Send message successfully, messageId=010242AF97F8BAD452073505610000001D topic = signature tag=fabric_test_channel
+2024-10-31 19:34:58 - Try to send message
+2024-10-31 19:34:58 - Send message successfully, messageId=010242AF97F8BAD452073505620000001E topic = signature tag=fabric_test_channel
+2024-10-31 19:34:59 - Try to send message
+2024-10-31 19:34:59 - Send message successfully, messageId=010242AF97F8BAD452073505630000001F topic = signature tag=fabric_test_channel
+2024-10-31 19:34:59 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:34:59 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:46:43 - Starting SynserverApplication using Java 17.0.13-ea with PID 1584118 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:46:43 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:46:43 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:46:43 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:46:44 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:46:44 - Starting service [Tomcat]
+2024-10-31 19:46:44 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:46:44 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:46:44 - Root WebApplicationContext: initialization completed in 1025 ms
+2024-10-31 19:46:44 - HikariPool-1 - Starting...
+2024-10-31 19:46:44 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@53c57a42
+2024-10-31 19:46:44 - HikariPool-1 - Start completed.
+2024-10-31 19:46:45 - Test Producer init success
+2024-10-31 19:46:45 - LiveReload server is running on port 35729
+2024-10-31 19:46:45 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:46:45 - Started SynserverApplication in 3.223 seconds (process running for 3.677)
+2024-10-31 19:46:45 - Try to send message
+2024-10-31 19:46:46 - Send message successfully, messageId=010242AF97F8BA2BF60735082500000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:46 - Try to send message
+2024-10-31 19:46:46 - Send message successfully, messageId=010242AF97F8BA2BF60735082600000001 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:47 - Try to send message
+2024-10-31 19:46:47 - Send message successfully, messageId=010242AF97F8BA2BF60735082700000002 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:48 - Try to send message
+2024-10-31 19:46:48 - Send message successfully, messageId=010242AF97F8BA2BF60735082800000003 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:49 - Try to send message
+2024-10-31 19:46:49 - Send message successfully, messageId=010242AF97F8BA2BF60735082900000004 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:50 - Try to send message
+2024-10-31 19:46:50 - Send message successfully, messageId=010242AF97F8BA2BF60735082A00000005 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:51 - Try to send message
+2024-10-31 19:46:51 - Send message successfully, messageId=010242AF97F8BA2BF60735082B00000006 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:52 - Try to send message
+2024-10-31 19:46:52 - Send message successfully, messageId=010242AF97F8BA2BF60735082C00000007 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:53 - Try to send message
+2024-10-31 19:46:53 - Send message successfully, messageId=010242AF97F8BA2BF60735082D00000008 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:54 - Try to send message
+2024-10-31 19:46:54 - Send message successfully, messageId=010242AF97F8BA2BF60735082E00000009 topic = signature tag=fabric_test_channel
+2024-10-31 19:46:55 - Try to send message
+2024-10-31 19:46:55 - Send message successfully, messageId=010242AF97F8BA2BF60735082F0000000A topic = signature tag=fabric_test_channel
+2024-10-31 19:46:56 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:46:56 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:48:26 - Starting SynserverApplication using Java 17.0.13-ea with PID 1587500 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:48:26 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:48:26 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:48:26 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:48:27 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:48:27 - Starting service [Tomcat]
+2024-10-31 19:48:27 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:48:27 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:48:27 - Root WebApplicationContext: initialization completed in 1031 ms
+2024-10-31 19:48:27 - HikariPool-1 - Starting...
+2024-10-31 19:48:27 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4423dfc1
+2024-10-31 19:48:27 - HikariPool-1 - Start completed.
+2024-10-31 19:48:28 - Test Producer init success
+2024-10-31 19:48:28 - LiveReload server is running on port 35729
+2024-10-31 19:48:28 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:48:28 - Started SynserverApplication in 3.224 seconds (process running for 3.675)
+2024-10-31 19:48:28 - Try to send message
+2024-10-31 19:48:29 - Send message successfully, messageId=010242AF97F8BA392C0735088C00000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:29 - Try to send message
+2024-10-31 19:48:29 - Send message successfully, messageId=010242AF97F8BA392C0735088D00000001 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:30 - Try to send message
+2024-10-31 19:48:30 - Send message successfully, messageId=010242AF97F8BA392C0735088E00000002 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:31 - Try to send message
+2024-10-31 19:48:31 - Send message successfully, messageId=010242AF97F8BA392C0735088F00000003 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:32 - Try to send message
+2024-10-31 19:48:32 - Send message successfully, messageId=010242AF97F8BA392C0735089000000004 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:33 - Try to send message
+2024-10-31 19:48:33 - Send message successfully, messageId=010242AF97F8BA392C0735089100000005 topic = signature tag=fabric_test_channel
+2024-10-31 19:48:34 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:48:34 - HikariPool-1 - Shutdown completed.
+2024-10-31 19:53:25 - Starting SynserverApplication using Java 17.0.13-ea with PID 1596464 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 19:53:25 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 19:53:25 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 19:53:25 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 19:53:26 - Tomcat initialized with port 9091 (http)
+2024-10-31 19:53:26 - Starting service [Tomcat]
+2024-10-31 19:53:26 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 19:53:26 - Initializing Spring embedded WebApplicationContext
+2024-10-31 19:53:26 - Root WebApplicationContext: initialization completed in 1044 ms
+2024-10-31 19:53:26 - HikariPool-1 - Starting...
+2024-10-31 19:53:26 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1062f009
+2024-10-31 19:53:26 - HikariPool-1 - Start completed.
+2024-10-31 19:53:27 - Test Producer init success
+2024-10-31 19:53:27 - LiveReload server is running on port 35729
+2024-10-31 19:53:27 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 19:53:27 - Started SynserverApplication in 3.269 seconds (process running for 3.725)
+2024-10-31 19:53:27 - Try to send message
+2024-10-31 19:53:28 - Send message successfully, messageId=010242AF97F8BA5C30073509B700000000 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:28 - Try to send message
+2024-10-31 19:53:28 - Send message successfully, messageId=010242AF97F8BA5C30073509B800000001 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:29 - Try to send message
+2024-10-31 19:53:29 - Send message successfully, messageId=010242AF97F8BA5C30073509B900000002 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:30 - Try to send message
+2024-10-31 19:53:30 - Send message successfully, messageId=010242AF97F8BA5C30073509BA00000003 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:31 - Try to send message
+2024-10-31 19:53:31 - Send message successfully, messageId=010242AF97F8BA5C30073509BB00000004 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:32 - Try to send message
+2024-10-31 19:53:32 - Send message successfully, messageId=010242AF97F8BA5C30073509BC00000005 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:33 - Try to send message
+2024-10-31 19:53:33 - Send message successfully, messageId=010242AF97F8BA5C30073509BD00000006 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:34 - Try to send message
+2024-10-31 19:53:34 - Send message successfully, messageId=010242AF97F8BA5C30073509BE00000007 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:35 - Try to send message
+2024-10-31 19:53:35 - Send message successfully, messageId=010242AF97F8BA5C30073509BF00000008 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:36 - Try to send message
+2024-10-31 19:53:36 - Send message successfully, messageId=010242AF97F8BA5C30073509C000000009 topic = signature tag=fabric_test_channel
+2024-10-31 19:53:37 - Try to send message
+2024-10-31 19:53:37 - Send message successfully, messageId=010242AF97F8BA5C30073509C10000000A topic = signature tag=fabric_test_channel
+2024-10-31 19:53:38 - Try to send message
+2024-10-31 19:53:38 - Send message successfully, messageId=010242AF97F8BA5C30073509C20000000B topic = signature tag=fabric_test_channel
+2024-10-31 19:53:39 - Try to send message
+2024-10-31 19:53:39 - Send message successfully, messageId=010242AF97F8BA5C30073509C30000000C topic = signature tag=fabric_test_channel
+2024-10-31 19:53:40 - HikariPool-1 - Shutdown initiated...
+2024-10-31 19:53:40 - HikariPool-1 - Shutdown completed.
+2024-10-31 20:00:26 - Starting SynserverApplication using Java 17.0.13-ea with PID 1609057 (/home/lihaodong/SynServer/synserver/target/classes started by lihaodong in /home/lihaodong/SynServer/synserver)
+2024-10-31 20:00:26 - No active profile set, falling back to 1 default profile: "default"
+2024-10-31 20:00:26 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-31 20:00:26 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-31 20:00:27 - Tomcat initialized with port 9091 (http)
+2024-10-31 20:00:27 - Starting service [Tomcat]
+2024-10-31 20:00:27 - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-31 20:00:27 - Initializing Spring embedded WebApplicationContext
+2024-10-31 20:00:27 - Root WebApplicationContext: initialization completed in 1035 ms
+2024-10-31 20:00:27 - HikariPool-1 - Starting...
+2024-10-31 20:00:27 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6c6731d4
+2024-10-31 20:00:27 - HikariPool-1 - Start completed.
+2024-10-31 20:00:28 - Test Producer init success
+2024-10-31 20:00:29 - LiveReload server is running on port 35729
+2024-10-31 20:00:29 - Tomcat started on port 9091 (http) with context path ''
+2024-10-31 20:00:29 - Started SynserverApplication in 3.206 seconds (process running for 3.652)
+2024-10-31 20:00:29 - Try to send message
+2024-10-31 20:00:29 - Send message successfully, messageId=010242AF97F8BA8D6107350B5D00000000 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:30 - Try to send message
+2024-10-31 20:00:30 - Send message successfully, messageId=010242AF97F8BA8D6107350B5D00000001 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:31 - Try to send message
+2024-10-31 20:00:31 - Send message successfully, messageId=010242AF97F8BA8D6107350B5E00000002 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:32 - Try to send message
+2024-10-31 20:00:32 - Send message successfully, messageId=010242AF97F8BA8D6107350B5F00000003 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:33 - Try to send message
+2024-10-31 20:00:33 - Send message successfully, messageId=010242AF97F8BA8D6107350B6000000004 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:34 - Try to send message
+2024-10-31 20:00:34 - Send message successfully, messageId=010242AF97F8BA8D6107350B6100000005 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:35 - Try to send message
+2024-10-31 20:00:35 - Send message successfully, messageId=010242AF97F8BA8D6107350B6200000006 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:36 - Try to send message
+2024-10-31 20:00:36 - Send message successfully, messageId=010242AF97F8BA8D6107350B6300000007 topic = signature tag=fabric_test_channel
+2024-10-31 20:00:37 - HikariPool-1 - Shutdown initiated...
+2024-10-31 20:00:37 - HikariPool-1 - Shutdown completed.
