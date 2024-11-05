@@ -1,32 +1,22 @@
 package com.fdu.synserver.service;
 
 import org.springframework.stereotype.Service;
-import java.nio.ByteBuffer;
-import java.util.Collections;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.rocketmq.client.apis.ClientConfiguration;
 import org.apache.rocketmq.client.apis.ClientConfigurationBuilder;
 import org.apache.rocketmq.client.apis.ClientException;
 import org.apache.rocketmq.client.apis.ClientServiceProvider;
-import org.apache.rocketmq.client.apis.consumer.FilterExpressionType;
 import org.apache.rocketmq.client.apis.consumer.PushConsumer;
-import org.apache.rocketmq.client.apis.consumer.ConsumeResult;
-import org.apache.rocketmq.client.apis.consumer.FilterExpression;
 import org.apache.rocketmq.client.apis.message.Message;
-import org.apache.rocketmq.client.apis.message.MessageView;
 import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.springframework.stereotype.Service;
-
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.fdu.synserver.entity.ChainEventMessage;
-
 import jakarta.annotation.PostConstruct;
+
 @Service
 public class MQSynTestService { //测试用，向本地MQ发送消息
     private static final Log LOG = LogFactory.getLog(MQClientService.class);
