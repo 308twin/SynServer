@@ -76,13 +76,13 @@ public class DBService {
         switch (message.getOperationType()) {
             case 1: // insert
                 String formattedDate = sdf.format(new Date(message.getUpdateTime()));
-
                 return "INSERT INTO " + tableName + " (`key`, `value`, `update_time_on_chain`) VALUES ('"
                         + message.getKey() + "', '" + message.getValue() + "', '" + formattedDate + "')";
             case 2: // update signature
+                String formattedUpdateTime = sdf.format(new Date(message.getUpdateTime()));
                 return "UPDATE " + tableName + " SET value = '" + message.getValue()
-                        + "', update_time_on_chain = FROM_UNIXTIME(" + message.getUpdateTime() / 1000.0
-                        + ") WHERE key = '" + message.getKey() + "'";
+                        + "', update_time_on_chain = '" + formattedUpdateTime + "' WHERE key = '" + message.getKey()
+                        + "'";
 
             default:
                 break;
