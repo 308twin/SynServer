@@ -53,7 +53,7 @@ public class MQSynTestService { //测试用，向本地MQ发送消息
     }
 
 
-    @PostConstruct
+    //@PostConstruct
     public void initSynProducer() throws ClientException {
        
         provider = ClientServiceProvider.loadService();

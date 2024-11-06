@@ -121,7 +121,7 @@ public class MQClientService {
         // 计算签名并发送
         String tableName = chainEventMessage.getChainType() + "_" + chainEventMessage.getChannelName();
         byte[] signature = signatureService.signData(tableName,chainEventMessage.toBytes());
-        SignatureMessage signatureMessage = new SignatureMessage(chainEventMessage.getKey(), tableName,dbName,signature.toString());
+        SignatureMessage signatureMessage = new SignatureMessage(chainEventMessage.getKey(), dbName,tableName,signature.toString());
         mqServerService.sendSignature(signatureMessage);
     }
 

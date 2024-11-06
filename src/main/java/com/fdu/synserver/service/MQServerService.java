@@ -200,8 +200,8 @@ public class MQServerService {
         try {
             signatureMessage = kryo.readObject(input, SignatureMessage.class);
             // build sql to update signature
-            dbService.addSQL("UPDATE " + signatureMessage.getTableName() + " SET signature = "
-                    + signatureMessage.getSignature() + " WHERE key = " + signatureMessage.getKey());
+            dbService.addSQL("UPDATE " + signatureMessage.getTableName() + " SET `signature` = '"
+                    + signatureMessage.getSignature() + "' WHERE `key` = '" + signatureMessage.getKey()+"'");
         } catch (Exception e) {
             LOG.error("Failed to deserialize message: " + messageView.getMessageId());
             input.close();
