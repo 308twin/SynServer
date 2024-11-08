@@ -1,6 +1,8 @@
 package com.fdu.synserver.service;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -12,13 +14,17 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
+import com.fdu.synserver.entity.ChainEventMessage;
 
 import jakarta.annotation.PostConstruct;
 
 import java.io.File;;
+
 @Service
 public class SignatureService {
     @org.springframework.beans.factory.annotation.Value("${my.custom.config.isServer}")
@@ -29,7 +35,8 @@ public class SignatureService {
     private final DBService dbService;
 
     // 缓存密钥对
-    private Map<String, Object> keyCache = new ConcurrentHashMap<>();
+    private Map<String, PublicKey> publicKeyCache = new ConcurrentHashMap<>();
+    private Map<String, PrivateKey> privateKeyCache = new ConcurrentHashMap<>();
 
     public SignatureService(DBService dbService) {
         this.dbService = dbService;
@@ -37,11 +44,12 @@ public class SignatureService {
 
     // 初始化密钥对
     @PostConstruct
-    public void initKeyPairFromTables() {
+    public void initKeyPairFromTables() throws Exception {
         if (keyPath == null || keyPath.isEmpty()) {
-            throw new IllegalStateException("Key path is not properly configured. Please check application.yml configuration.");
+            throw new IllegalStateException(
+                    "Key path is not properly configured. Please check application.yml configuration.");
         }
-        
+
         List<String> tables = dbService.getAllTableNames();
         for (String tableName : tables) {
             // 尝试从 keyPath 读取密钥
@@ -58,7 +66,7 @@ public class SignatureService {
                         byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
                         KeyFactory keyFactory = KeyFactory.getInstance("EC");
                         PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
-                        keyCache.put(tableName, publicKey);
+                        publicKeyCache.put(tableName, publicKey);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -72,13 +80,14 @@ public class SignatureService {
                         byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
                         KeyFactory keyFactory = KeyFactory.getInstance("EC");
                         PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
-                        keyCache.put(tableName, privateKey);
+                        privateKeyCache.put(tableName, privateKey);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
     }
 
     // 生成密钥对并保存到文件
@@ -90,9 +99,9 @@ public class SignatureService {
 
             // 缓存需要的密钥
             if (isServer) {
-                keyCache.put(tableName, keyPair.getPublic());
+                publicKeyCache.put(tableName, keyPair.getPublic());
             } else {
-                keyCache.put(tableName, keyPair.getPrivate());
+                privateKeyCache.put(tableName, keyPair.getPrivate());
             }
 
             // 获取私钥和公钥
@@ -116,22 +125,18 @@ public class SignatureService {
         }
     }
 
-    // 获取缓存的密钥（私钥或公钥）
-    public Object getKey(String tableName) {
-        return keyCache.get(tableName);
-    }
-
     // 使用私钥对数据进行签名
-    public byte[] signData(String tableName, byte[] data) {
+    public String signData(String tableName, byte[] data) {
         try {
-            PrivateKey privateKey = (PrivateKey) keyCache.get(tableName);
+            PrivateKey privateKey = privateKeyCache.get(tableName);
             if (privateKey == null) {
                 throw new IllegalStateException("Private key not found for table: " + tableName);
             }
             Signature signature = Signature.getInstance("SHA256withECDSA");
             signature.initSign(privateKey);
             signature.update(data);
-            return signature.sign();
+            byte[] signatureBytes = signature.sign();
+            return Base64.getEncoder().encodeToString(signatureBytes); // 使用 Base64 编码返回字符串
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -141,7 +146,7 @@ public class SignatureService {
     // 使用公钥验证签名
     public boolean verifySignature(String tableName, byte[] data, byte[] signatureBytes) {
         try {
-            PublicKey publicKey = (PublicKey) keyCache.get(tableName);
+            PublicKey publicKey = publicKeyCache.get(tableName);
             if (publicKey == null) {
                 throw new IllegalStateException("Public key not found for table: " + tableName);
             }
@@ -152,6 +157,58 @@ public class SignatureService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // 辅助方法：加载公钥
+    private PublicKey loadPublicKey(Path path) throws Exception {
+        byte[] publicKeyBytes = Files.readAllBytes(path);
+        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        return keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+    }
+
+    // 辅助方法：加载私钥
+    private PrivateKey loadPrivateKey(Path path) throws Exception {
+        byte[] privateKeyBytes = Files.readAllBytes(path);
+        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+    }
+
+    /**
+     * 测试方法：
+     * 从 fabric_test_channel 表读取公私钥，使用私钥对数据进行签名，
+     * 并使用公钥验证签名的有效性。
+     */
+    public void testSignature() {
+        String tableName = "fabric_test_channel";
+        String data = "这是要签名的测试数据";
+        try {
+            // 获取私钥和公钥
+            PrivateKey privateKey = loadPrivateKey(Paths.get(keyPath + "/" + tableName + "_private.key"));
+            PublicKey publicKey = publicKeyCache.get(tableName);
+            if (privateKey == null) {
+                throw new IllegalStateException("未找到表的私钥: " + tableName);
+            }
+            if (publicKey == null) {
+                throw new IllegalStateException("未找到表的公钥: " + tableName);
+            }
+
+            // 使用私钥签名
+            Signature signer = Signature.getInstance("SHA256withECDSA");
+            signer.initSign(privateKey);
+            signer.update(data.getBytes(StandardCharsets.UTF_8));
+            byte[] signatureBytes = signer.sign();
+            String signatureBase64 = Base64.getEncoder().encodeToString(signatureBytes);
+            System.out.println("签名 (Base64): " + signatureBase64);
+
+            // 使用公钥验证签名
+            Signature verifier = Signature.getInstance("SHA256withECDSA");
+            verifier.initVerify(publicKey);
+            verifier.update(data.getBytes(StandardCharsets.UTF_8));
+            boolean isValid = verifier.verify(signatureBytes);
+            System.out.println("签名验证结果: " + isValid);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
