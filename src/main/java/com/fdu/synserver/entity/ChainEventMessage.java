@@ -1,5 +1,7 @@
 package com.fdu.synserver.entity;
 
+import java.nio.charset.StandardCharsets;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ public class ChainEventMessage {
     private Long updateTime;
 
     public byte[] toBytes() {
-        return (key + "," + value + "," + operationType + "," + chainType + "," + channelName + "," + updateTime).getBytes();
+        return (key + "," + value + "," + operationType + "," + chainType + "," + channelName + "," + updateTime).getBytes(StandardCharsets.UTF_8);
     }
 
     public String toString() {

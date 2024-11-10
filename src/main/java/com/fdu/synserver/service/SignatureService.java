@@ -87,7 +87,7 @@ public class SignatureService {
                 }
             }
         }
-
+        //testSignature();
     }
 
     // 生成密钥对并保存到文件
@@ -136,7 +136,9 @@ public class SignatureService {
             signature.initSign(privateKey);
             signature.update(data);
             byte[] signatureBytes = signature.sign();
-            return Base64.getEncoder().encodeToString(signatureBytes); // 使用 Base64 编码返回字符串
+            String signatureBase64 = Base64.getEncoder().encodeToString(signatureBytes);
+            System.out.println("签名 (Base64): " + signatureBase64);
+            return signatureBase64; // 使用 Base64 编码返回字符串
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -181,7 +183,18 @@ public class SignatureService {
      */
     public void testSignature() {
         String tableName = "fabric_test_channel";
-        String data = "这是要签名的测试数据";
+        
+        ChainEventMessage chainEventMessage = new ChainEventMessage();
+        String uuid = UUID.randomUUID().toString();
+        Long curTime = System.currentTimeMillis();
+        chainEventMessage.setKey(uuid);
+        chainEventMessage.setChainType("fabric");
+        chainEventMessage.setChannelName("test_channel");
+        chainEventMessage.setValue(uuid);
+        chainEventMessage.setOperationType((byte) 1);
+        chainEventMessage.setUpdateTime(curTime);
+
+        byte[] data = chainEventMessage.toBytes();
         try {
             // 获取私钥和公钥
             PrivateKey privateKey = loadPrivateKey(Paths.get(keyPath + "/" + tableName + "_private.key"));
@@ -196,7 +209,7 @@ public class SignatureService {
             // 使用私钥签名
             Signature signer = Signature.getInstance("SHA256withECDSA");
             signer.initSign(privateKey);
-            signer.update(data.getBytes(StandardCharsets.UTF_8));
+            signer.update(data);
             byte[] signatureBytes = signer.sign();
             String signatureBase64 = Base64.getEncoder().encodeToString(signatureBytes);
             System.out.println("签名 (Base64): " + signatureBase64);
@@ -204,7 +217,7 @@ public class SignatureService {
             // 使用公钥验证签名
             Signature verifier = Signature.getInstance("SHA256withECDSA");
             verifier.initVerify(publicKey);
-            verifier.update(data.getBytes(StandardCharsets.UTF_8));
+            verifier.update(data);
             boolean isValid = verifier.verify(signatureBytes);
             System.out.println("签名验证结果: " + isValid);
         } catch (Exception e) {
