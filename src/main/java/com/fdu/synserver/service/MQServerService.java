@@ -2,6 +2,7 @@ package com.fdu.synserver.service;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,9 +18,12 @@ import org.apache.rocketmq.client.apis.message.Message;
 import org.apache.rocketmq.client.apis.message.MessageView;
 import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
+import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -46,6 +50,9 @@ public class MQServerService {
 
     @org.springframework.beans.factory.annotation.Value("${spring.rocketmqServer.topic.signature}")
     private String signatureTopic;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private Producer signatureProducer;
     private ClientServiceProvider provider;
@@ -125,7 +132,7 @@ public class MQServerService {
                 .setConsumerGroup("record_consumer") // 设置 Consumer Group
                 .setSubscriptionExpressions(Collections.singletonMap(synTopic, filterExpression))
                 .setMessageListener(messageView -> {
-                    processSynMessage(messageView);
+                    processKVMessage(messageView);
                     return ConsumeResult.SUCCESS;
                 })
                 .build();
@@ -176,7 +183,7 @@ public class MQServerService {
             return;
         }
 
-        LOG.debug("add to buildSQ:"+chainEventMessage.toString());
+        LOG.debug("add to buildSQ:" + chainEventMessage.toString());
         // 构造SQL并将语句加入待执行队列
         String sql = dbService.buildSQL(chainEventMessage);
         dbService.addSQL(sql);
@@ -201,11 +208,50 @@ public class MQServerService {
             signatureMessage = kryo.readObject(input, SignatureMessage.class);
             // build sql to update signature
             dbService.addSQL("UPDATE " + signatureMessage.getTableName() + " SET `signature` = '"
-                    + signatureMessage.getSignature() + "' WHERE `key` = '" + signatureMessage.getKey()+"'");
+                    + signatureMessage.getSignature() + "' WHERE `key` = '" + signatureMessage.getKey() + "'");
         } catch (Exception e) {
             LOG.error("Failed to deserialize message: " + messageView.getMessageId());
             input.close();
             return;
+        }
+
+    }
+
+    public void processKVMessage(MessageView messageView) {
+        // 提取 Tag 和 Keys
+        String tag = messageView.getTag().orElse(null); // channelName
+        String keys = messageView.getProperties().get(MessageConst.PROPERTY_KEYS);
+
+        // 反序列化消息主体
+        ByteBuffer body = messageView.getBody();
+        byte[] byteArray = new byte[body.remaining()];
+        body.get(byteArray);
+
+        // 解析消息为 Map
+        Map<String, String> producerMap;
+        try {
+            producerMap = objectMapper.readValue(byteArray, Map.class);
+        } catch (Exception ex) {
+            LOG.error("Failed to parse message: " + messageView.getMessageId(), ex);
+            return;
+        }
+
+        // 构造 ChainEventMessage 对象
+        try {
+            ChainEventMessage chainEventMessage = ChainEventMessage.builder()
+                    .chainType(producerMap.get("chainType"))
+                    .channelName(producerMap.get("channelName"))
+                    .key(producerMap.get("key"))
+                    .value(producerMap.get("value"))
+                    .updateTime(Long.valueOf(producerMap.get("updateTime")))
+                    .build();
+            LOG.debug("Processed message successfully: " + chainEventMessage.toString());
+            LOG.debug("Add to buildSQL:" + chainEventMessage.toString());
+            // 构造SQL并将语句加入待执行队列
+            String sql = dbService.buildSQL(chainEventMessage);
+            dbService.addSQL(sql);
+        } catch (Exception ex) {
+            LOG.error("Failed to process message: " + messageView.getMessageId(), ex);
         }
 
     }

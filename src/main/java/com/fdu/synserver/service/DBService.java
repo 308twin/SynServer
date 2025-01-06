@@ -111,15 +111,22 @@ public class DBService {
         String formattedDate = sdf.format(new Date(message.getUpdateTime()));
 
         switch (message.getOperationType()) {
-            case 1: // insert
+            case 0: // insert
                 return "INSERT INTO " + tableName + " (`key`, `value`, `update_time_on_chain`) VALUES ('"
                         + message.getKey() + "', '" + message.getValue() + "', '" + formattedDate + "')";
-            case 2: // update signature
+            case 1: // update signature
                 return "UPDATE " + tableName + " SET value = '" + message.getValue()
                         + "', update_time_on_chain = '" + formattedDate + "' WHERE key = '" + message.getKey() + "'";
             default:
                 return null;
         }
+    }
+
+    // 将value解析成数据库字段
+    public String buildDynamicSQL(ChainEventMessage message) {
+        String value = message.getValue();
+        return null;
+
     }
 
     // 内部类用于存储失败的SQL和重试次数

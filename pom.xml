@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fdu</groupId>
-	<artifactId>synserver</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>synserver</name>
+	<artifactId>synservice</artifactId>
+	<version>1.0.0</version>
+	<name>synservice</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

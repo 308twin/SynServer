@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import org.apache.rocketmq.client.apis.ClientConfiguration;
 import org.apache.rocketmq.client.apis.ClientConfigurationBuilder;
@@ -19,12 +20,14 @@ import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.TopicConfig;
+import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.rocketmq.shaded.com.google.protobuf.Timestamp;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.rocketmq.tools.admin.DefaultMQAdminExt;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.fdu.synserver.entity.ChainEventMessage;
@@ -53,7 +56,9 @@ public class MQClientService {
     @org.springframework.beans.factory.annotation.Value("${spring.datasource.dbName}")
     private String dbName;
 
-    
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private ClientServiceProvider provider;
     private ClientConfiguration clientConfiguration;
     private PushConsumer pushConsumer;
@@ -63,7 +68,6 @@ public class MQClientService {
     private final SignatureService signatureService;
     private final MQServerService mqServerService;
 
-     
     public MQClientService(DBService dbService, SignatureService signatureService, MQServerService mqServerService) {
         this.dbService = dbService;
         this.signatureService = signatureService;
@@ -72,7 +76,7 @@ public class MQClientService {
 
     @PostConstruct
     public void initConsumer() throws ClientException {
-        if(isServer) {
+        if (isServer) {
             return;
         }
         provider = ClientServiceProvider.loadService();
@@ -82,16 +86,16 @@ public class MQClientService {
         String tag = "*";
         FilterExpression filterExpression = new FilterExpression(tag, FilterExpressionType.TAG);
         pushConsumer = provider.newPushConsumerBuilder()
-                    .setClientConfiguration(clientConfiguration)
-                    .setConsumerGroup("record_consumer") // 设置 Consumer Group
-                    .setSubscriptionExpressions(Collections.singletonMap(synTopic, filterExpression))
-                    .setMessageListener(messageView -> {
-                        // LOG.info("Consume message successfully, messageId="+
-                        // messageView.getMessageId());
-                        processMessage(messageView);
-                        return ConsumeResult.SUCCESS;
-                    })
-                    .build();
+                .setClientConfiguration(clientConfiguration)
+                .setConsumerGroup("record_consumer") // 设置 Consumer Group
+                .setSubscriptionExpressions(Collections.singletonMap(synTopic, filterExpression))
+                .setMessageListener(messageView -> {
+                    // LOG.info("Consume message successfully, messageId="+
+                    // messageView.getMessageId());
+                    processKVMessage(messageView);
+                    return ConsumeResult.SUCCESS;
+                })
+                .build();
     }
 
     public void processMessage(MessageView messageView) {
@@ -115,14 +119,49 @@ public class MQClientService {
         }
 
         // 构造SQL并将语句加入待执行队列
-        String sql =  dbService.buildSQL(chainEventMessage);
+        String sql = dbService.buildSQL(chainEventMessage);
         dbService.addSQL(sql);
 
         // 计算签名并发送
         String tableName = chainEventMessage.getChainType() + "_" + chainEventMessage.getChannelName();
         String signature = signatureService.signData(tableName, chainEventMessage.toBytes());
-        SignatureMessage signatureMessage = new SignatureMessage(chainEventMessage.getKey(), dbName,tableName,signature);
+        SignatureMessage signatureMessage = new SignatureMessage(chainEventMessage.getKey(), dbName, tableName,
+                signature);
         mqServerService.sendSignature(signatureMessage);
+    }
+
+    public void processKVMessage(MessageView messageView) {
+        // 提取 Tag 和 Keys
+        String tag = messageView.getTag().orElse(null); // channelName
+        String keys = messageView.getProperties().get(MessageConst.PROPERTY_KEYS);
+
+        // 反序列化消息主体
+        ByteBuffer body = messageView.getBody();
+        byte[] byteArray = new byte[body.remaining()];
+        body.get(byteArray);
+
+        // 解析消息为 Map
+        Map<String, String> producerMap;
+        try {
+            producerMap = objectMapper.readValue(byteArray, Map.class);
+        } catch (Exception ex) {
+            LOG.error("Failed to parse message: " + messageView.getMessageId(), ex);
+            return;
+        }
+
+        // 构造 ChainEventMessage 对象
+        try {
+            ChainEventMessage chainEventMessage = ChainEventMessage.builder()
+                    .chainType(producerMap.get("chainType"))
+                    .channelName(producerMap.get("channelName"))
+                    .key(producerMap.get("key"))
+                    .value(producerMap.get("value"))
+                    .updateTime(Long.valueOf(producerMap.get("updateTime")))
+                    .build();
+            LOG.debug("Processed message successfully: "+chainEventMessage.toString());
+        } catch (Exception ex) {
+            LOG.error("Failed to process message: " + messageView.getMessageId(), ex);
+        }
     }
 
 
