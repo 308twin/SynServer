@@ -132,7 +132,7 @@ public class MQServerService {
                 .setConsumerGroup("record_consumer") // 设置 Consumer Group
                 .setSubscriptionExpressions(Collections.singletonMap(synTopic, filterExpression))
                 .setMessageListener(messageView -> {
-                    processKVMessage(messageView);
+                    processSynMessage(messageView);
                     return ConsumeResult.SUCCESS;
                 })
                 .build();

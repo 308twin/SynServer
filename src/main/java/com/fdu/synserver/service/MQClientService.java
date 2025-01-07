@@ -92,7 +92,7 @@ public class MQClientService {
                 .setMessageListener(messageView -> {
                     // LOG.info("Consume message successfully, messageId="+
                     // messageView.getMessageId());
-                    processKVMessage(messageView);
+                    processMessage(messageView);
                     return ConsumeResult.SUCCESS;
                 })
                 .build();
